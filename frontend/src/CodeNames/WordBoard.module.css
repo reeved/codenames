@@ -75,7 +75,8 @@
   .WordBoardContainer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 2em 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 2em 6em 6em 6em 6em 6em;
+    height: 75vh;
   }
 
   .Word {

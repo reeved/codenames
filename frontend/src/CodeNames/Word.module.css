@@ -1,5 +1,6 @@
 .Word {
   padding: 2em 0 2em 0;
+  justify-self: center;
   width: 24vw;
   min-width: 24vw;
   margin: 0.5em;
@@ -22,6 +23,7 @@
 @media only screen and (min-width: 660px) {
   .Word {
     padding: 2em 0 2em 0;
+    justify-self: center;
     width: 8vw;
     min-width: 130px;
     font-size: 1em;
@@ -35,6 +37,7 @@
 @media only screen and (min-width: 1000px) {
   .Word {
     padding: 2em 0 2em 0;
+    justify-self: center;
     width: 8vw;
     min-width: 130px;
     font-size: 1em;

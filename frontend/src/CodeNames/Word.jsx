@@ -7,20 +7,21 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   UnsafeWord: {
-    backgroundColor: ({ isGameOver, isSelected }) => (isGameOver && !isSelected ? 'hsl(34, 57%, 90%)' : 'hsl(34, 57%, 60%)'),
+    backgroundColor: ({ isGameOver, isSelected }) => (isGameOver && !isSelected ? 'rgba(222,184,135,0.5)' : 'rgba(222,184,135)'),
   },
 
   BombWord: {
-    backgroundColor: ({ isGameOver, isSelected }) => (isGameOver && !isSelected ? 'hsl(0, 0%, 55%)' : 'hsl(0, 0%, 71%)'),
+    backgroundColor: 'rgba(79, 79, 79)',
+    color: 'white',
   },
 
   RedWord: {
-    backgroundColor: ({ isGameOver, isSelected }) => (isGameOver && !isSelected ? 'hsl(0, 68%, 70%)' : 'hsl(0, 68%, 42%)'),
+    backgroundColor: ({ isGameOver, isSelected }) => (isGameOver && !isSelected ? 'rgba(178, 34, 34,0.5)' : 'rgba(178, 34, 34)'),
     color: 'white !important',
   },
 
   BlueWord: {
-    backgroundColor: ({ isGameOver, isSelected }) => (isGameOver && !isSelected ? 'hsl(225, 73%, 70%)' : 'hsl(225, 73%, 40%)'),
+    backgroundColor: ({ isGameOver, isSelected }) => (isGameOver && !isSelected ? 'rgba(65,105,225,0.5)' : 'rgba(65,105,225)'),
     color: 'white !important',
   },
   UnselectedWord: {

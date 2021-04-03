@@ -9,7 +9,7 @@ const initialState = {
   redScore: 8,
   blueScore: 8,
   isGameOver: false,
-  words: [{ id: 1, word: 'africa', status: 'safe' }],
+  words: null,
   selectedItems: [],
   chatMessages: [],
 };

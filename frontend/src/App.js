@@ -31,17 +31,15 @@ function App() {
           </Toolbar>
         </AppBar>
         <header className="App-header">
-          <div align="center">
-            <Route exact path="/">
-              <HomePage />
-            </Route>
-            <Route path="/lobby">
-              <Lobby />
-            </Route>
-            <Route path="/codenames">
-              <CodeNames />
-            </Route>
-          </div>
+          <Route exact path="/">
+            <HomePage />
+          </Route>
+          <Route path="/lobby">
+            <Lobby />
+          </Route>
+          <Route path="/codenames">
+            <CodeNames />
+          </Route>
         </header>
       </div>
     </CodenamesContext.Provider>

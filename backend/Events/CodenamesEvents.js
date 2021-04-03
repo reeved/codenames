@@ -88,9 +88,16 @@ function setGameOver(io, socket) {
 }
 
 function chatMessage(io, socket) {
-  socket.on('chat message', (msg) => {
+  socket.on('chat message', ({ msg, playerNickname }) => {
     console.log(msg);
-    io.emit('chat message', msg);
+    message = playerNickname + ': ' + msg;
+    io.emit('chat message', message);
+  });
+}
+
+function setNickname(io, socket) {
+  socket.on('join-lobby', (nickname) => {
+    socket.emit('set-nickname', nickname);
   });
 }
 
@@ -102,4 +109,5 @@ module.exports = function (io, socket) {
   setGameOver(io, socket);
   updateSelected(io, socket);
   changeTurn(io, socket);
+  setNickname(io, socket);
 };

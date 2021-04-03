@@ -30,10 +30,12 @@ const Lobby = () => {
 
   const games = ['Codenames', 'Poker', 'Tahi', 'Scum'];
 
+  const playerNickname = gameState.nickname;
   const players = ['Reeve', 'Jack', 'Steven', 'Daniel', 'Callum', 'Ben'];
 
   const sendChatMessage = () => {
-    socket.emit('chat message', msg);
+    msg && socket.emit('chat message', { msg, playerNickname });
+    setMsg('');
   };
 
   return (
@@ -89,6 +91,7 @@ const Lobby = () => {
                 InputProps={{
                   className: `${classes.input}`,
                 }}
+                value={msg}
                 onChange={(e) => setMsg(e.target.value)}
               ></TextField>
               <Button variant="contained" style={{ width: '25%' }} className={classes.button} onClick={() => sendChatMessage()}>

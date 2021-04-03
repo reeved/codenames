@@ -37,7 +37,8 @@ const HomePage = () => {
       socket.emit('join-lobby', nickname);
     } else {
       console.log('Creating a game');
-      socket.emit('create-lobby', nickname);
+      socket.emit('join-lobby', nickname);
+      //socket.emit('create-lobby', nickname);
     }
   };
 
@@ -87,7 +88,7 @@ const HomePage = () => {
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
-          <Button className={`${classes.button}`} variant="contained" disabled={!nickname || nicknameError} onClick={handleBtnClick}>
+          <Button type="button" className={`${classes.button}`} variant="contained" disabled={!nickname || nicknameError} onClick={handleBtnClick}>
             {lobbyCode ? `Join Lobby` : `Create Lobby`}
           </Button>
         </Grid>

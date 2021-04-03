@@ -2,7 +2,7 @@ import { useContext, useReducer, useEffect } from 'react';
 import socket from '../Socket';
 
 const initialState = {
-  nickname: 'Reeve',
+  nickname: 'Anon',
   team: 'blue',
   isSpyMaster: false,
   currentTurn: 'Red',
@@ -19,6 +19,13 @@ const reducer = (state, action) => {
     case 'init': {
       return {
         ...state,
+      };
+    }
+
+    case 'set-nickname': {
+      return {
+        ...state,
+        nickname: action.nickname,
       };
     }
 
@@ -100,6 +107,13 @@ export default function useGameState() {
       });
     }
 
+    function setNickname(nickname) {
+      dispatch({
+        type: 'set-nickname',
+        nickname: nickname,
+      });
+    }
+
     function newCodenamesGame(boardWords) {
       dispatch({
         type: 'new-codenames',
@@ -136,6 +150,7 @@ export default function useGameState() {
     }
 
     socket.on('chat message', newChatMessage);
+    socket.on('set-nickname', setNickname);
     socket.on('new-codenames', newCodenamesGame);
     socket.on('update-selected', updateSelected);
     socket.on('decrement-score', decrementScore);
@@ -144,6 +159,7 @@ export default function useGameState() {
 
     return () => {
       socket.removeListener('chat message', newChatMessage);
+      socket.removeListener('set-nickname', setNickname);
       socket.removeListener('new-codenames', newCodenamesGame);
       socket.removeListener('update-selected', updateSelected);
       socket.removeListener('decrement-score', decrementScore);

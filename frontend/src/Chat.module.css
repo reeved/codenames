@@ -1,0 +1,27 @@
+.container {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 80% !important;
+  border-radius: 10px;
+  padding: 2em;
+  margin-left: 5em;
+}
+
+.inputContainer {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  column-gap: 1em;
+  justify-items: stretch;
+  grid-auto-flow: column;
+}
+
+.messagesContainer {
+  display: flex;
+  flex-direction: column-reverse;
+  text-align: start;
+  height: 70% !important;
+  overflow: auto;
+  word-wrap: break-word;
+  margin: 1em 0 1em 0;
+}

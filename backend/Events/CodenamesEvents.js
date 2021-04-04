@@ -1,4 +1,5 @@
 const words = require('../ServerResources/wordlist.js');
+const Lobby = require('../Domain/Lobby');
 
 function shuffle(array) {
   var currentIndex = array.length,
@@ -20,46 +21,28 @@ function shuffle(array) {
   return array;
 }
 
-function newGame(io) {
-  console.log('A new game is starting.');
-  const numWords = 24;
+function newGame(io, socket) {
+  socket.on('new-game', () => {
+    const numWords = 24;
+    const lobby = new Lobby();
+    var shuffledWords = shuffle(words);
+    var boardWords = shuffledWords.slice(0, numWords);
 
-  var shuffledWords = shuffle(words);
-  var boardWords = shuffledWords.slice(0, numWords);
-
-  for (var i = 0; i < 24; i++) {
-    if (i === 23) {
-      boardWords[i]['status'] = 'bomb';
-    } else if (i > 15) {
-      boardWords[i]['status'] = 'unsafe';
-    } else if (i > 7) {
-      boardWords[i]['status'] = 'Red';
-    } else {
-      boardWords[i]['status'] = 'Blue';
+    for (var i = 0; i < 24; i++) {
+      if (i === 23) {
+        boardWords[i]['status'] = 'bomb';
+      } else if (i > 15) {
+        boardWords[i]['status'] = 'unsafe';
+      } else if (i > 7) {
+        boardWords[i]['status'] = 'Red';
+      } else {
+        boardWords[i]['status'] = 'Blue';
+      }
     }
-  }
 
-  boardWords = shuffle(boardWords);
+    boardWords = shuffle(boardWords);
 
-  io.emit('new-codenames', boardWords);
-}
-
-function createLobby(io, socket) {
-  io.once('connection', () => {
-    console.log('A new user has connected.');
-    newGame(io);
-    // Create room and assign host player to the room
-    // Subscribe to the room events
-    //socket.join();
-    // Add player information to the host socket
-    // Send room ID back to host.
-    //io.in(roomID).emit('lobby-code', new LobbyCodeDTO(roomID));
-  });
-}
-
-function resetBoard(io, socket) {
-  socket.on('reset-game', () => {
-    newGame(io);
+    io.emit('new-codenames', boardWords);
   });
 }
 
@@ -87,27 +70,10 @@ function setGameOver(io, socket) {
   });
 }
 
-function chatMessage(io, socket) {
-  socket.on('chat message', ({ msg, playerNickname }) => {
-    console.log(msg);
-    message = playerNickname + ': ' + msg;
-    io.emit('chat message', message);
-  });
-}
-
-function setNickname(io, socket) {
-  socket.on('join-lobby', (nickname) => {
-    socket.emit('set-nickname', nickname);
-  });
-}
-
 module.exports = function (io, socket) {
-  createLobby(io, socket);
-  chatMessage(io, socket);
-  resetBoard(io, socket);
+  newGame(io, socket);
   decrementScore(io, socket);
   setGameOver(io, socket);
   updateSelected(io, socket);
   changeTurn(io, socket);
-  setNickname(io, socket);
 };

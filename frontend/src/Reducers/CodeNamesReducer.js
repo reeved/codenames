@@ -86,7 +86,7 @@ const reducer = (state, action) => {
   }
 };
 
-export default function useGameState() {
+export default function useCodenamesState() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   /**
@@ -168,5 +168,5 @@ export default function useGameState() {
     };
   }, [state]);
 
-  return [state, dispatch];
+  return { state, dispatch };
 }

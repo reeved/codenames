@@ -103,7 +103,6 @@ const words = [
   { id: 100, word: 'lead', status: 'safe' },
   { id: 101, word: 'lemon', status: 'safe' },
   { id: 102, word: 'limousine', status: 'safe' },
-  { id: 103, word: 'leadlock', status: 'safe' },
   { id: 104, word: 'log', status: 'safe' },
   { id: 105, word: 'mammoth', status: 'safe' },
   { id: 106, word: 'maple', status: 'safe' },

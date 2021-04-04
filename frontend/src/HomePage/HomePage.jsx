@@ -1,7 +1,9 @@
-import { React, useState } from 'react';
+import { React, useState, useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import styles from './HomePage.module.css';
 import { Grid, TextField, Button, makeStyles } from '@material-ui/core';
 import socket from '../Socket';
+import { LobbyContext } from '../Context';
 
 const useStyles = makeStyles({
   textField: {
@@ -24,21 +26,23 @@ const useStyles = makeStyles({
 });
 
 const HomePage = () => {
+  const { state: lobbyState } = useContext(LobbyContext);
   const [nickname, setNickname] = useState('');
   const [lobbyCode, setCode] = useState('');
   const [nicknameError, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState(' ');
 
+  const notValidID = lobbyState.lobbyID === null;
+  const errorMsgID = notValidID && 'This lobby does not exist. Try another code, or create a Lobby.';
+
   const classes = useStyles({ lobbyCode });
 
   const handleBtnClick = () => {
     if (lobbyCode) {
-      console.log('Joining a game');
-      socket.emit('join-lobby', nickname);
+      socket.emit('join-lobby', nickname, lobbyCode);
     } else {
-      console.log('Creating a game');
-      socket.emit('join-lobby', nickname);
-      //socket.emit('create-lobby', nickname);
+      //socket.emit('join-lobby', nickname);
+      socket.emit('create-lobby', nickname);
     }
   };
 
@@ -53,6 +57,9 @@ const HomePage = () => {
     }
   };
 
+  if (lobbyState.lobbyID) {
+    return <Redirect to="/lobby" />;
+  }
   return (
     <div className={styles.container}>
       <h1>LOCKDOWN GAMES</h1>
@@ -78,13 +85,16 @@ const HomePage = () => {
         </Grid>
         <Grid container item xs={12} md={8} lg={8} justify="flex-start">
           <TextField
+            error={notValidID}
+            helperText={errorMsgID}
             className={classes.textField}
             InputProps={{
               className: classes.input,
             }}
             inputProps={{ maxLength: 6 }}
             variant="outlined"
-            onChange={(e) => setCode(e.target.value)}
+            value={lobbyCode}
+            onChange={(e) => setCode(e.target.value.toUpperCase())}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -93,6 +103,7 @@ const HomePage = () => {
           </Button>
         </Grid>
       </Grid>
+      <p>{lobbyState.validID}</p>
     </div>
   );
 };

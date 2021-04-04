@@ -1,7 +1,8 @@
 import { React, useState, useContext } from 'react';
+import { Redirect, Link } from 'react-router-dom';
 import styles from './Lobby.module.css';
 import socket from '../Socket';
-import { CodenamesContext } from '../Context';
+import { CodenamesContext, LobbyContext } from '../Context';
 import { Grid, TextField, Button, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -22,22 +23,26 @@ const useStyles = makeStyles({
   },
 });
 
-const Lobby = () => {
-  const { state: gameState } = useContext(CodenamesContext);
+const Lobby = ({ loggedIn }) => {
+  const { state: lobbyState } = useContext(LobbyContext);
   const classes = useStyles();
   const [chosenGame, setGame] = useState('Codenames');
   const [msg, setMsg] = useState('');
 
   const games = ['Codenames', 'Poker', 'Tahi', 'Scum'];
 
-  const playerNickname = gameState.nickname;
-  const players = ['Reeve', 'Jack', 'Steven', 'Daniel', 'Callum', 'Ben'];
+  const playerNickname = lobbyState.nickname;
+  const players = lobbyState.players;
+  const lobbyID = lobbyState.lobbyID;
 
   const sendChatMessage = () => {
     msg && socket.emit('chat message', { msg, playerNickname });
     setMsg('');
   };
 
+  if (!loggedIn) {
+    return <Redirect to="/" />;
+  }
   return (
     <div className={styles.container}>
       <h1>LOBBY</h1>
@@ -57,6 +62,13 @@ const Lobby = () => {
         <Grid container item lg={4} alignItems="stretch">
           <div className={`${styles.moreInfo} ${styles.aboutGame}`}>
             <h2 className={styles.subheader}>About Game</h2>
+            <h3>{`Your Name: ${playerNickname}`}</h3>
+            <h3>{`Lobby ID: ${lobbyID}`}</h3>
+            <Link to="/codenames" style={{ textDecoration: 'none' }}>
+              <Button size="large" variant="contained" onClick={() => socket.emit('new-game')}>
+                Start Game
+              </Button>
+            </Link>
           </div>
         </Grid>
         <Grid container item lg={4} alignItems="stretch">
@@ -75,7 +87,7 @@ const Lobby = () => {
           <div className={`${styles.moreInfo} ${styles.chat}`}>
             <h2 className={styles.subheader}>Chat</h2>
             <div className={styles.chatBox}>
-              {gameState.chatMessages.map((msg, index) => {
+              {lobbyState.chatMessages.map((msg, index) => {
                 return (
                   <p className={styles.chatMessages} key={index}>
                     {msg}

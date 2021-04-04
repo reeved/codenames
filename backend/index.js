@@ -12,14 +12,20 @@ const io = socketio(server, {
   },
 });
 
-const loadCodenamesEvents = require('./Events/CodenamesEvents');
-
 app.get('/', (req, res) => {
   res.send('The server is running');
 });
 
+const loadCodenamesEvents = require('./Events/CodenamesEvents');
+const loadLobbyEvents = require('./Events/LobbyEvents');
+const LobbyManager = require('./Domain/LobbyManager');
+
+const lobbyManager = new LobbyManager();
+
 io.on('connection', (socket) => {
+  console.log('A new user has connected.');
   loadCodenamesEvents(io, socket);
+  loadLobbyEvents(io, socket, lobbyManager);
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });

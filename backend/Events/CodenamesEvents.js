@@ -23,7 +23,7 @@ function shuffle(array) {
 
 function newGame(io, socket) {
   socket.on('new-game', () => {
-    roomID = socket.player.lobbyID;
+    const roomID = socket.player.lobbyID;
     const numWords = 24;
     var shuffledWords = shuffle(words);
     var boardWords = shuffledWords.slice(0, numWords);
@@ -48,28 +48,28 @@ function newGame(io, socket) {
 
 function updateSelected(io, socket) {
   socket.on('update-selected', (id) => {
-    roomID = socket.player.lobbyID;
+    const roomID = socket.player.lobbyID;
     io.in(roomID).emit('update-selected', id);
   });
 }
 
 function decrementScore(io, socket) {
   socket.on('decrement-score', (team) => {
-    roomID = socket.player.lobbyID;
+    const roomID = socket.player.lobbyID;
     io.in(roomID).emit('decrement-score', team);
   });
 }
 
 function changeTurn(io, socket) {
   socket.on('change-turn', (currentTeam) => {
-    roomID = socket.player.lobbyID;
+    const roomID = socket.player.lobbyID;
     io.in(roomID).emit('change-turn', currentTeam === 'Red' ? 'Blue' : 'Red');
   });
 }
 
 function setGameOver(io, socket) {
   socket.on('game-over', () => {
-    roomID = socket.player.lobbyID;
+    const roomID = socket.player.lobbyID;
     io.in(roomID).emit('game-over');
   });
 }

@@ -36,9 +36,25 @@ function joinLobby(io, socket, lobbyManager) {
   });
 }
 
+function leaveLobby(io, socket, lobbyManager) {
+  socket.on('disconnecting', (reason) => {
+    if (socket.player) {
+      const roomID = socket.player.lobbyID;
+      const room = io.of('/').adapter.rooms.get(roomID);
+      //console.log('Room: ', room);
+
+      if (room.size === 1) {
+        console.log('Cleaning up');
+        //user is the last one in the room. lobby should now be cleaned.
+        lobbyManager.deleteLobby(roomID);
+      }
+    }
+  });
+}
+
 function chatMessage(io, socket, lobbyManager) {
   socket.on('chat message', ({ msg, playerNickname }) => {
-    roomID = socket.player.lobbyID;
+    const roomID = socket.player.lobbyID;
     console.log(msg);
     message = playerNickname + ': ' + msg;
     io.in(roomID).emit('chat message', message);
@@ -49,4 +65,5 @@ module.exports = function (io, socket, lobbyManager) {
   createLobby(io, socket, lobbyManager);
   joinLobby(io, socket, lobbyManager);
   chatMessage(io, socket, lobbyManager);
+  leaveLobby(io, socket, lobbyManager);
 };

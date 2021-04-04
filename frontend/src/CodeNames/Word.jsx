@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import styles from './Word.module.css';
 import socket from '../Socket';
 import { CodenamesContext } from '../Context';
-import { makeStyles } from '@material-ui/core';
+import { ListItemAvatar, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   UnsafeWord: {
@@ -51,15 +51,15 @@ const Word = ({ item }) => {
 
   const handleWordClick = (item) => {
     socket.emit('update-selected', item.id);
-    if (item.status === 'Red' || item.status === 'Blue') {
+    if (item.status === 'unsafe' || item.status !== currentTeam) {
+      socket.emit('change-turn', currentTeam);
+    } else if (item.status === 'bomb') {
+      socket.emit('game-over');
+    } else if (item.status === 'Red' || item.status === 'Blue') {
       if ((item.status === 'Red' && gameState.redScore === 1) || (item.status === 'Blue' && gameState.blueScore === 1)) {
         socket.emit('game-over', item.status);
       }
       socket.emit('decrement-score', item.status);
-    } else if (item.status === 'bomb') {
-      socket.emit('game-over');
-    } else if (item.status === 'unsafe') {
-      socket.emit('change-turn', currentTeam);
     }
   };
 

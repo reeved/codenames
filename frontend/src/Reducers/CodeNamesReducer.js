@@ -11,7 +11,6 @@ const initialState = {
   isGameOver: false,
   words: null,
   selectedItems: [],
-  chatMessages: [],
 };
 
 const reducer = (state, action) => {
@@ -22,26 +21,12 @@ const reducer = (state, action) => {
       };
     }
 
-    case 'set-nickname': {
-      return {
-        ...state,
-        nickname: action.nickname,
-      };
-    }
-
     case 'new-codenames': {
       console.log('Received new game from server.');
       console.log(action.words);
       return {
         ...initialState,
         words: action.words,
-      };
-    }
-
-    case 'new-chat-message': {
-      return {
-        ...state,
-        chatMessages: [...state.chatMessages, action.msg],
       };
     }
 
@@ -100,20 +85,6 @@ export default function useCodenamesState() {
   }, []);
 
   useEffect(() => {
-    function newChatMessage(msg) {
-      dispatch({
-        type: 'new-chat-message',
-        msg: msg,
-      });
-    }
-
-    function setNickname(nickname) {
-      dispatch({
-        type: 'set-nickname',
-        nickname: nickname,
-      });
-    }
-
     function newCodenamesGame(boardWords) {
       dispatch({
         type: 'new-codenames',
@@ -149,8 +120,6 @@ export default function useCodenamesState() {
       });
     }
 
-    socket.on('chat message', newChatMessage);
-    socket.on('set-nickname', setNickname);
     socket.on('new-codenames', newCodenamesGame);
     socket.on('update-selected', updateSelected);
     socket.on('decrement-score', decrementScore);
@@ -158,8 +127,6 @@ export default function useCodenamesState() {
     socket.on('change-turn', changeTurn);
 
     return () => {
-      socket.removeListener('chat message', newChatMessage);
-      socket.removeListener('set-nickname', setNickname);
       socket.removeListener('new-codenames', newCodenamesGame);
       socket.removeListener('update-selected', updateSelected);
       socket.removeListener('decrement-score', decrementScore);

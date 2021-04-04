@@ -1,14 +1,16 @@
 import { useContext, React } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import styles from './WordBoard.module.css';
-import { CodenamesContext } from '../Context';
+import { LobbyContext, CodenamesContext } from '../Context';
 import socket from '../Socket';
 import Word from './Word';
 import { CircularProgress, Button } from '@material-ui/core';
 
 const CodeNames = ({ loggedIn }) => {
   const { state: gameState, dispatch } = useContext(CodenamesContext);
+  const { state: lobbyState } = useContext(LobbyContext);
 
+  const nickname = lobbyState.nickname;
   const currentTeam = gameState.currentTurn;
   const redAmount = gameState.redScore;
   const blueAmount = gameState.blueScore;
@@ -54,6 +56,9 @@ const CodeNames = ({ loggedIn }) => {
             {wordList.map((item) => (
               <Word item={item} key={item.id} />
             ))}
+            <p>
+              Your name: <span style={{ fontWeight: 'bold' }}>{nickname}</span>
+            </p>
             <div className={styles.gameOverInfo} style={{ visibility: isGameOver ? 'visible' : 'hidden' }}>
               <h3>{redAmount === 0 ? `Red Won!` : blueAmount === 0 ? `Blue Won!` : `${currentTeam} hit the bomb!`}</h3>
               <Button variant="contained" onClick={() => socket.emit('new-game')}>

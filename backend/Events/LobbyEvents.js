@@ -11,7 +11,6 @@ function createLobby(io, socket, lobbyManager) {
     socket.join(lobby.roomID);
     socket.player = host;
 
-    //console.log(lobbyManager.lobbies);
     socket.emit('join-lobby', lobby.roomID, nickname);
     io.in(lobby.roomID).emit('update-players', lobby.getPlayerNicknames());
   });
@@ -39,22 +38,15 @@ function joinLobby(io, socket, lobbyManager) {
 
 function chatMessage(io, socket, lobbyManager) {
   socket.on('chat message', ({ msg, playerNickname }) => {
+    roomID = socket.player.lobbyID;
     console.log(msg);
     message = playerNickname + ': ' + msg;
-    io.emit('chat message', message);
+    io.in(roomID).emit('chat message', message);
   });
-}
-
-function setNickname(io, socket, lobbyManager) {
-  //   socket.on('join-lobby', (nickname, lobbyCode) => {
-  //     console.log(`Player ${nickname} joined with code ${lobbyCode}`);
-  //     socket.emit('set-nickname', nickname);
-  //   });
 }
 
 module.exports = function (io, socket, lobbyManager) {
   createLobby(io, socket, lobbyManager);
   joinLobby(io, socket, lobbyManager);
   chatMessage(io, socket, lobbyManager);
-  setNickname(io, socket, lobbyManager);
 };

@@ -1,9 +1,8 @@
 import './App.css';
-import { Link } from 'react-router-dom';
 import { LobbyContext } from './Context';
 
 import useLobbyState from './Reducers/LobbyReducer';
-import { AppBar, Toolbar, Button } from '@material-ui/core';
+import { AppBar, Toolbar } from '@material-ui/core';
 import WebsiteRoutes from './WebsiteRoutes';
 
 function App() {

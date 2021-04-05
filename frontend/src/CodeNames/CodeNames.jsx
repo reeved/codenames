@@ -1,5 +1,5 @@
 import { useContext, React } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import styles from './WordBoard.module.css';
 import { LobbyContext, CodenamesContext } from '../Context';
 import socket from '../Socket';

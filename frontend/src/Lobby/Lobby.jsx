@@ -2,7 +2,7 @@ import { React, useState, useContext } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import styles from './Lobby.module.css';
 import socket from '../Socket';
-import { CodenamesContext, LobbyContext } from '../Context';
+import { LobbyContext } from '../Context';
 import { Grid, TextField, Button, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({

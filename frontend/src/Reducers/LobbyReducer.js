@@ -1,4 +1,4 @@
-import { useContext, useReducer, useEffect } from 'react';
+import { useReducer, useEffect } from 'react';
 import socket from '../Socket';
 
 const initialState = {

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import styles from './Word.module.css';
 import socket from '../Socket';
 import { CodenamesContext } from '../Context';
-import { ListItemAvatar, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   UnsafeWord: {

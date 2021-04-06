@@ -58,10 +58,11 @@ const Word = ({ item }) => {
         socket.emit('decrement-score', item.status);
       }
       socket.emit('change-turn', currentTeam);
-    }
-
-    if ((item.status === 'Red' && gameState.redScore === 1) || (item.status === 'Blue' && gameState.blueScore === 1)) {
-      socket.emit('game-over', item.status);
+    } else if (item.status === 'Red' || item.status === 'Blue') {
+      if ((item.status === 'Red' && gameState.redScore === 1) || (item.status === 'Blue' && gameState.blueScore === 1)) {
+        socket.emit('game-over', item.status);
+      }
+      socket.emit('decrement-score', item.status);
     }
   };
 

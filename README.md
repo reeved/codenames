@@ -1,4 +1,4 @@
 # Want to play this game?
 
 Visit: 
-[reeve.netlify.app](reeve.netlify.app)
+[reeve.netlify.app](https://reeve.netlify.app)
